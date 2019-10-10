@@ -1,0 +1,31 @@
+clear all;
+% No erro-free communicaitons below Eb/No = -1.59dB
+EbNo = -1.59;
+% calculate the value of BER in PAM system while EbNo = -1.59
+BER = berawgn(-1.59, 'PAM', 2);
+% X save the value of EbNO, Y save the value of BER
+X(1) = -1.59;
+Y(1) = BER;
+% use i for count
+i = 1;
+% calculat PAM system down to 10.^(-7)
+Bound = 10.^(-7);
+% loop breaks while BER <= 10.^(-7)
+while BER >= Bound
+i = i + 1;
+% use 0.1 as one iteration
+EbNo = EbNo + 0.1;
+% calculate the value of BER in PAM system while EbNo changed
+BER = berawgn(EbNo, 'PAM', 2);
+% Save the value of EbNo and BER to X, Y
+X(i) = EbNo;
+Y(i) = BER;
+end
+% plot
+figure
+semilogy(X,Y);
+hold on;
+grid on;
+xlabel('Eb/No, dB');
+ylabel('BER');
+title('Uncoded BER of PAM system down to 1e-7');
